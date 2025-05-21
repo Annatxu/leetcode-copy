@@ -147,6 +147,41 @@ class Solution {
 }
 ```
 
+```
+DFS:
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        dfs(root, 0, result);
+        return result;
+    }
+
+    private void dfs(TreeNode node, int level, List<List<Integer>> result) {
+        if (node == null) return;
+
+        // Create new level list if needed
+        if (result.size() == level) {
+            result.add(new LinkedList<>());
+        }
+
+        List<Integer> levelList = result.get(level);
+
+        if (level % 2 == 0) {
+            // Left to right
+            levelList.add(node.val);
+        } else {
+            // Right to left
+            levelList.add(0, node.val);
+        }
+
+        // Go deeper
+        dfs(node.left, level + 1, result);
+        dfs(node.right, level + 1, result);
+    }
+}
+
+```
+
 #### C++
 
 ```cpp
