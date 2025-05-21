@@ -147,8 +147,7 @@ class Solution {
 }
 ```
 
-```
-DFS:
+```DFS:
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
