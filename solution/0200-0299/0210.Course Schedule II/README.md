@@ -88,23 +88,39 @@ tags:
 #### Python3
 
 ```python
-class Solution:
-    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        g = defaultdict(list)
-        indeg = [0] * numCourses
-        for a, b in prerequisites:
-            g[b].append(a)
-            indeg[a] += 1
-        ans = []
-        q = deque(i for i, x in enumerate(indeg) if x == 0)
-        while q:
-            i = q.popleft()
-            ans.append(i)
-            for j in g[i]:
-                indeg[j] -= 1
-                if indeg[j] == 0:
-                    q.append(j)
-        return ans if len(ans) == numCourses else []
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] res = new int[numCourses];
+        int[] indegree = new int[numCourses];
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int[] prerequisite : prerequisites ){
+            graph.get(prerequisite[1]).add(prerequisite[0]);
+            indegree[prerequisite[0]]++;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++){
+            if(indegree[i] == 0) {
+                q.add(i);
+            }
+        }
+        int count = 0;
+        while(!q.isEmpty()){
+            int node = q.poll();
+            res[count] = node;
+            count++;
+            for (int nei : graph.get(node)){
+                indegree[nei]--;
+                if(indegree[nei] == 0) {
+                    q.add(nei);
+                }
+            }
+        }
+        return count == numCourses ? res : new int[0];
+    }
+}
 ```
 
 #### Java
