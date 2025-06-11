@@ -85,65 +85,126 @@ tags:
 
 <!-- tabs:start -->
 
-#### Python3
+#### Java 
 
-```python
-class Solution:
-    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
-        g = [[inf] * n for _ in range(n)]
-        for u, v, w in times:
-            g[u - 1][v - 1] = w
-        dist = [inf] * n
-        dist[k - 1] = 0
-        vis = [False] * n
-        for _ in range(n):
-            t = -1
-            for j in range(n):
-                if not vis[j] and (t == -1 or dist[t] > dist[j]):
-                    t = j
-            vis[t] = True
-            for j in range(n):
-                dist[j] = min(dist[j], dist[t] + g[t][j])
-        ans = max(dist)
-        return -1 if ans == inf else ans
+```Java
+/*
+Step 1: Create a Map of start and end nodes with weight
+        1 -> {2,1},{3,2}
+        2 -> {4,4},{5,5}
+        3 -> {5,3}
+        4 ->
+        5 ->
+
+Step 2: create a result array where we will keep track the minimum distance to rech end of the node from start node
+
+Step 3: Create a Queue and add starting position with it's weight and add it's reachable distance with increament of own't weight plus a weight require to reach at the end node from start node.
+        We keep adding and removing pairs from queue and updating result array as well.
+
+Step 4: find the maximum value from result array:
+
+*/
+
+class Solution {
+    public int networkDelayTime(int[][] times, int n, int k) {
+        
+        //Step 1
+        Map<Integer, Map<Integer, Integer>> map = new HashMap<>();
+        
+        for(int[] time : times) {
+            int start = time[0];
+            int end = time[1];
+            int weight = time[2];
+            
+            map.putIfAbsent(start, new HashMap<>());
+            map.get(start).put(end, weight);
+        }
+        
+         // Step 2
+        int[] dis = new int[n+1];
+        Arrays.fill(dis, Integer.MAX_VALUE);
+        dis[k] = 0;
+        
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{k,0});
+        
+        //Step 3:
+        while(!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int curNode = cur[0];
+            int curWeight = cur[1];
+            
+            for(int next : map.getOrDefault(curNode, new HashMap<>()).keySet()) {
+                int nextweight = map.get(curNode).get(next);
+                
+                if(curWeight + nextweight < dis[next]) {
+                    dis[next] = curWeight + nextweight;
+                    queue.add(new int[]{next, curWeight + nextweight});
+                }
+            }
+        }
+        
+        //Step 4:
+        int res = 0;
+        for(int i=1; i<=n; i++) {
+            if(dis[i] > res) {
+                res = Math.max(res, dis[i]);
+            } 
+        }
+        
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+}
 ```
 
 #### Java
 
 ```java
 class Solution {
-    public int networkDelayTime(int[][] times, int n, int k) {
-        int[][] g = new int[n][n];
-        int[] dist = new int[n];
-        final int inf = 1 << 29;
-        Arrays.fill(dist, inf);
-        for (var e : g) {
-            Arrays.fill(e, inf);
-        }
-        for (var e : times) {
-            g[e[0] - 1][e[1] - 1] = e[2];
-        }
-        dist[k - 1] = 0;
-        boolean[] vis = new boolean[n];
-        for (int i = 0; i < n; ++i) {
-            int t = -1;
-            for (int j = 0; j < n; ++j) {
-                if (!vis[j] && (t == -1 || dist[t] > dist[j])) {
-                    t = j;
-                }
-            }
-            vis[t] = true;
-            for (int j = 0; j < n; ++j) {
-                dist[j] = Math.min(dist[j], dist[t] + g[t][j]);
-            }
-        }
-        int ans = 0;
-        for (int x : dist) {
-            ans = Math.max(ans, x);
-        }
-        return ans == inf ? -1 : ans;
-    }
+
+    /**
+    Input: times = [[2,1,1],[2,3,1],[3,4,1]], n = 4, k = 2
+    graph: [[?,?,?,?],[1, ?,1,?],[?,?,?,1],[?,?,?,?]]
+    distance: [?,0,?,?]
+    visited：[!, !, !, !]
+
+     */
+   public int networkDelayTime(int[][] times, int n, int k) {
+       int[][] graph = new int[n][n]; // record weight from node u to node v
+       int[] distance = new int[n]; // record the minimum distance from node k to node i
+       final int inf = 1 << 29;
+       Arrays.fill(distance, inf);
+       // initial the graph
+       for (var edge : graph) {
+           Arrays.fill(edge, inf);
+       }
+       for (var time : times) {
+           graph[time[0] - 1][time[1] - 1] = time[2];
+       }
+       distance[k - 1] = 0; // the distance to itself is 0
+       // record am array to member the node has been visited
+       boolean[] visited = new boolean[n];
+       // update 
+       for (int i = 0; i < n; i++) {
+           int t = -1;
+           for (int j = 0; j < n; ++j) {
+               if (!visited[j] && (t == -1 || distance[t] > distance[j])) {
+                   t = j;
+               }
+           }
+           visited[t] = true;
+           for (int j = 0; j < n; ++j) {
+               distance[j] = Math.min(distance[j], distance[t] + graph[t][j]);
+           }
+       }
+       int ans = 0;
+       for (int x : distance) {
+           ans = Math.max(ans, x);
+       }
+       return ans == inf ? -1 : ans;
+   }
 }
+
 ```
 
 #### C++
