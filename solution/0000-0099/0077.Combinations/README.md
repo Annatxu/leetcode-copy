@@ -81,26 +81,39 @@ tags:
 
 <!-- tabs:start -->
 
-#### Python3
+#### Java-myself
 
-```python
-class Solution:
-    def combine(self, n: int, k: int) -> List[List[int]]:
-        def dfs(i: int):
-            if len(t) == k:
-                ans.append(t[:])
-                return
-            if i > n:
-                return
-            t.append(i)
-            dfs(i + 1)
-            t.pop()
-            dfs(i + 1)
+```java
+class Solution {
+    /**
+    1. return all possiblle answers
+    2. 选择列表是range[1, n]
+    3. 路径：k numbers
+    4. 结束条件： tmp.length == k
+    5. 撤销选择： remove last number
+     */
+List<List<Integer>> result = new ArrayList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        backtracking(n, 1, k, new ArrayList<>());
+        return result;
+    }
 
-        ans = []
-        t = []
-        dfs(1)
-        return ans
+    private void backtracking(int n, int index, int k, List<Integer> tmp){
+        // 剪枝：temp 长度加上区间 [cur, n] 的长度小于 k，不可能构造出长度为 k 的 temp
+        if(tmp.size() + (n - index + 1) < k) return;
+        // end condition, and record the answer
+        if (k == tmp.size()) {
+            result.add(new ArrayList<>(tmp));
+            return;
+        }
+        // consider the current position
+        tmp.add(index);
+        backtracking(n, index + 1, k, tmp);
+        tmp.remove(tmp.size() - 1);
+        // not consider the current position
+        backtracking(n, index + 1, k, tmp);
+    }
+}
 ```
 
 #### Java
