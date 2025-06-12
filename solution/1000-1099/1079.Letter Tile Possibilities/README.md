@@ -71,27 +71,35 @@ tags:
 
 在 $dfs$ 中，我们枚举 $cnt$ 中每个大于 $0$ 的值 $cnt[i]$，将 $cnt[i]$ 减 $1$ 表示使用了这个字母，序列个数加 $1$，然后进行下一层搜索，在搜索结束后，累加返回的序列个数，然后将 $cnt[i]$ 加 $1$。最后返回序列个数。
 
-时间复杂度 $O(n \times n!)$，空间复杂度 $O(n)$。其中 $n$ 为字母种类数。
+The worst-case scenario occurs when all characters in tiles are unique
+时间复杂度 $O(n!)$，空间复杂度 $O(n)$。其中 $n$ 为字母种类数。
 
 <!-- tabs:start -->
 
-#### Python3
+#### Java-myself
 
-```python
-class Solution:
-    def numTilePossibilities(self, tiles: str) -> int:
-        def dfs(cnt: Counter) -> int:
-            ans = 0
-            for i, x in cnt.items():
-                if x > 0:
-                    ans += 1
-                    cnt[i] -= 1
-                    ans += dfs(cnt)
-                    cnt[i] += 1
-            return ans
+```Java
+class Solution {
+    public int numTilePossibilities(String tiles) {
+        int[] frequency = new int[26];
+        for (char c : tiles.toCharArray()) {
+            frequency[c - 'A']++;
+        }
+        return dfs(frequency);
+    }
 
-        cnt = Counter(tiles)
-        return dfs(cnt)
+    private int dfs(int[] frequency ) {
+        int count = 0;
+        for (int i = 0; i < 26; i++) {
+            if (frequency[i] > 0) {
+                frequency[i]--;
+                count += 1 + dfs(frequency);
+                frequency[i]++;
+            }
+        }
+        return count;
+    }
+}
 ```
 
 #### Java
