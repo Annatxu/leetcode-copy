@@ -87,10 +87,10 @@ class Solution {
             ans.add(new ArrayList<>(t));
             return;
         }
-        dfs(i + 1);
         t.add(nums[i]);
         dfs(i + 1);
         t.remove(t.size() - 1);
+        dfs(i + 1);
     }
 }
 ```
