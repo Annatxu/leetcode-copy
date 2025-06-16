@@ -71,11 +71,6 @@ tags:
 
 特别地，为了优化回溯效率，我们可以预处理每个位置的符合条件的数有哪些，用二维数组 match 保存。当我们尝试向位置 index 放入数时，我们只需要遍历 match[index] 即可。
 
-作者：力扣官方题解
-链接：https://leetcode.cn/problems/beautiful-arrangement/solutions/937821/you-mei-de-pai-lie-by-leetcode-solution-vea2/
-来源：力扣（LeetCode）
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-
 ### 方法一
 
 <!-- tabs:start -->
