@@ -65,10 +65,62 @@ tags:
 ## 解法
 
 <!-- solution:start -->
+具体地，我们定义函数 backtrack(index,n)，表示尝试向位置 index 放入数。其中 n 表示排列的长度。在当前函数中，我们首先找到一个符合条件的未被使用过的数，然后递归地执行 backtrack(index+1,n)，当该函数执行完毕，回溯到当前层，我们再尝试下一个符合条件的未被使用过的数即可。
+
+回溯过程中，我们可以用 vis 数组标记哪些数被使用过，每次我们选中一个数 x，我们就将 vis[x] 标记为 true，回溯完成后，我们再将其置为 false。
+
+特别地，为了优化回溯效率，我们可以预处理每个位置的符合条件的数有哪些，用二维数组 match 保存。当我们尝试向位置 index 放入数时，我们只需要遍历 match[index] 即可。
+
+作者：力扣官方题解
+链接：https://leetcode.cn/problems/beautiful-arrangement/solutions/937821/you-mei-de-pai-lie-by-leetcode-solution-vea2/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 ### 方法一
 
 <!-- tabs:start -->
+
+#### Java
+
+```java
+class Solution {
+    private int ans;
+    private boolean[] vis;
+    private Map<Integer, List<Integer>> match;
+
+    public int countArrangement(int n) {
+        ans = 0;
+        vis = new boolean[n + 1];
+        match = new HashMap<>();
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                if (i % j == 0 || j % i == 0) {
+                    match.computeIfAbsent(i, k -> new ArrayList<>()).add(j);
+                }
+            }
+        }
+        dfs(1);
+        return ans;
+    }
+
+    private void dfs(int i, int n) {
+        if (i == n + 1) {
+            ++ans;
+            return;
+        }
+        if (!match.containsKey(i)) {
+            return;
+        }
+        for (int j : match.get(i)) {
+            if (!vis[j]) {
+                vis[j] = true;
+                dfs(i + 1, n);
+                vis[j] = false;
+            }
+        }
+    }
+}
+```
 
 #### Python3
 
@@ -96,50 +148,6 @@ class Solution:
 
         dfs(1)
         return ans
-```
-
-#### Java
-
-```java
-class Solution {
-    private int n;
-    private int ans;
-    private boolean[] vis;
-    private Map<Integer, List<Integer>> match;
-
-    public int countArrangement(int n) {
-        this.n = n;
-        ans = 0;
-        vis = new boolean[n + 1];
-        match = new HashMap<>();
-        for (int i = 1; i <= n; ++i) {
-            for (int j = 1; j <= n; ++j) {
-                if (i % j == 0 || j % i == 0) {
-                    match.computeIfAbsent(i, k -> new ArrayList<>()).add(j);
-                }
-            }
-        }
-        dfs(1);
-        return ans;
-    }
-
-    private void dfs(int i) {
-        if (i == n + 1) {
-            ++ans;
-            return;
-        }
-        if (!match.containsKey(i)) {
-            return;
-        }
-        for (int j : match.get(i)) {
-            if (!vis[j]) {
-                vis[j] = true;
-                dfs(i + 1);
-                vis[j] = false;
-            }
-        }
-    }
-}
 ```
 
 #### C++
