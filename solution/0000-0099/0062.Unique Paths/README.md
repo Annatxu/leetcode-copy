@@ -119,7 +119,7 @@ class Solution {
     }
 }
 ```
-
+ 在右下角的数值是由上面的值还有左边的值相加得来的。the value in the bottom-right corner is calculated as val (from above) +  val(from left).
 ```方法三
 class Solution {
     public int uniquePaths(int m, int n) {
