@@ -98,25 +98,9 @@ $$
 
 <!-- tabs:start -->
 
-#### Python3
+#### Java 
 
-```python
-class Solution:
-    def uniquePaths(self, m: int, n: int) -> int:
-        f = [[0] * n for _ in range(m)]
-        f[0][0] = 1
-        for i in range(m):
-            for j in range(n):
-                if i:
-                    f[i][j] += f[i - 1][j]
-                if j:
-                    f[i][j] += f[i][j - 1]
-        return f[-1][-1]
-```
-
-#### Java
-
-```java
+```方法一
 class Solution {
     public int uniquePaths(int m, int n) {
         var f = new int[m][n];
@@ -134,6 +118,54 @@ class Solution {
         return f[m - 1][n - 1];
     }
 }
+```
+
+```方法三
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int[] f = new int[n];
+        Arrays.fill(f, 1);
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
+                f[j] += f[j - 1];
+            }
+        }
+        return f[n - 1];
+    }
+}
+```
+
+```方法二
+class Solution {
+    public int uniquePaths(int m, int n) {
+        var f = new int[m][n];
+        for (var g : f) {
+            Arrays.fill(g, 1);
+        }
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; j++) {
+                f[i][j] = f[i - 1][j] + f[i][j - 1];
+            }
+        }
+        return f[m - 1][n - 1];
+    }
+}
+```
+
+#### Python3
+
+```python
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        f = [[0] * n for _ in range(m)]
+        f[0][0] = 1
+        for i in range(m):
+            for j in range(n):
+                if i:
+                    f[i][j] += f[i - 1][j]
+                if j:
+                    f[i][j] += f[i][j - 1]
+        return f[-1][-1]
 ```
 
 #### C++
@@ -270,25 +302,6 @@ class Solution:
         return f[-1][-1]
 ```
 
-#### Java
-
-```java
-class Solution {
-    public int uniquePaths(int m, int n) {
-        var f = new int[m][n];
-        for (var g : f) {
-            Arrays.fill(g, 1);
-        }
-        for (int i = 1; i < m; ++i) {
-            for (int j = 1; j < n; j++) {
-                f[i][j] = f[i - 1][j] + f[i][j - 1];
-            }
-        }
-        return f[m - 1][n - 1];
-    }
-}
-```
-
 #### C++
 
 ```cpp
@@ -383,23 +396,6 @@ class Solution:
             for j in range(1, n):
                 f[j] += f[j - 1]
         return f[-1]
-```
-
-#### Java
-
-```java
-class Solution {
-    public int uniquePaths(int m, int n) {
-        int[] f = new int[n];
-        Arrays.fill(f, 1);
-        for (int i = 1; i < m; ++i) {
-            for (int j = 1; j < n; ++j) {
-                f[j] += f[j - 1];
-            }
-        }
-        return f[n - 1];
-    }
-}
 ```
 
 #### C++
