@@ -79,23 +79,6 @@ tags:
 
 <!-- tabs:start -->
 
-#### Python3
-
-```python
-class Solution:
-    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
-        @cache
-        def dfs(i: int, j: int) -> int:
-            if i >= m or j >= n or obstacleGrid[i][j]:
-                return 0
-            if i == m - 1 and j == n - 1:
-                return 1
-            return dfs(i + 1, j) + dfs(i, j + 1)
-
-        m, n = len(obstacleGrid), len(obstacleGrid[0])
-        return dfs(0, 0)
-```
-
 #### Java
 
 ```java
@@ -127,6 +110,63 @@ class Solution {
     }
 }
 ```
+### 方法二：动态规划
+
+我们可以使用动态规划的方法，定义一个二维数组 $f$，其中 $f[i][j]$ 表示从网格 $(0,0)$ 到网格 $(i,j)$ 的路径数。
+
+我们首先初始化 $f$ 的第一列和第一行的所有值，然后遍历其它行和列，有两种情况：
+
+-   若 $\textit{obstacleGrid}[i][j] = 1$，说明路径数为 $0$，那么 $f[i][j] = 0$；
+-   若 $\textit{obstacleGrid}[i][j] = 0$，则 $f[i][j] = f[i - 1][j] + f[i][j - 1]$。
+
+最后返回 $f[m - 1][n - 1]$ 即可。
+
+时间复杂度 $O(m \times n)$，空间复杂度 $O(m \times n)$。其中 $m$ 和 $n$ 分别是网格的行数和列数。
+
+<!-- tabs:start -->
+
+```java
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid.length, n = obstacleGrid[0].length;
+        int[][] f = new int[m][n];
+        for (int i = 0; i < m && obstacleGrid[i][0] == 0; ++i) {
+            f[i][0] = 1;
+        }
+        for (int j = 0; j < n && obstacleGrid[0][j] == 0; ++j) {
+            f[0][j] = 1;
+        }
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
+                if (obstacleGrid[i][j] == 0) {
+                    f[i][j] = f[i - 1][j] + f[i][j - 1];
+                }
+            }
+        }
+        return f[m - 1][n - 1];
+    }
+}
+```
+
+
+#### Python3
+
+```python
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        @cache
+        def dfs(i: int, j: int) -> int:
+            if i >= m or j >= n or obstacleGrid[i][j]:
+                return 0
+            if i == m - 1 and j == n - 1:
+                return 1
+            return dfs(i + 1, j) + dfs(i, j + 1)
+
+        m, n = len(obstacleGrid), len(obstacleGrid[0])
+        return dfs(0, 0)
+```
+
+
 
 #### C++
 
@@ -308,28 +348,7 @@ class Solution:
 
 #### Java
 
-```java
-class Solution {
-    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        int m = obstacleGrid.length, n = obstacleGrid[0].length;
-        int[][] f = new int[m][n];
-        for (int i = 0; i < m && obstacleGrid[i][0] == 0; ++i) {
-            f[i][0] = 1;
-        }
-        for (int j = 0; j < n && obstacleGrid[0][j] == 0; ++j) {
-            f[0][j] = 1;
-        }
-        for (int i = 1; i < m; ++i) {
-            for (int j = 1; j < n; ++j) {
-                if (obstacleGrid[i][j] == 0) {
-                    f[i][j] = f[i - 1][j] + f[i][j - 1];
-                }
-            }
-        }
-        return f[m - 1][n - 1];
-    }
-}
-```
+
 
 #### C++
 
