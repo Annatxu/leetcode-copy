@@ -102,6 +102,81 @@ class Solution {
 }
 ```
 
+### 方法二：离散化 + 树状数组
+
+我们将数组中的元素离散化，然后使用树状数组维护不大于某个元素的最长递增子序列的长度。
+
+遍历数组中的每个元素 $x$，将其离散化，然后在树状数组中查找不大于 $x-1$ 的最长递增子序列的长度 $t$，则 $x$ 的最长递增子序列的长度为 $t+1$，更新答案，并且更新树状数组中 $x$ 的最长递增子序列的长度。
+
+遍历完数组中的所有元素，即可得到答案。
+
+时间复杂度 $O(n \times \log n)$，空间复杂度 $O(n)$。其中 $n$ 为数组长度。
+
+<!-- tabs:start -->
+
+```java
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int[] s = nums.clone();
+        Arrays.sort(s);
+        int m = 0;
+        int n = s.length;
+        for (int i = 0; i < n; ++i) {
+            if (i == 0 || s[i] != s[i - 1]) {
+                s[m++] = s[i];
+            }
+        }
+        BinaryIndexedTree tree = new BinaryIndexedTree(m);
+        for (int x : nums) {
+            x = search(s, x, m);
+            int t = tree.query(x - 1) + 1;
+            tree.update(x, t);
+        }
+        return tree.query(m);
+    }
+
+    private int search(int[] nums, int x, int r) {
+        int l = 0;
+        while (l < r) {
+            int mid = (l + r) >> 1;
+            if (nums[mid] >= x) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l + 1;
+    }
+}
+
+class BinaryIndexedTree {
+    private int n;
+    private int[] c;
+
+    public BinaryIndexedTree(int n) {
+        this.n = n;
+        c = new int[n + 1];
+    }
+
+    public void update(int x, int v) {
+        while (x <= n) {
+            c[x] = Math.max(c[x], v);
+            x += x & -x;
+        }
+    }
+
+    public int query(int x) {
+        int mx = 0;
+        while (x > 0) {
+            mx = Math.max(mx, c[x]);
+            x -= x & -x;
+        }
+        return mx;
+    }
+}
+```
+
+
 #### Python3
 
 ```python
@@ -247,67 +322,7 @@ class Solution:
 
 #### Java
 
-```java
-class Solution {
-    public int lengthOfLIS(int[] nums) {
-        int[] s = nums.clone();
-        Arrays.sort(s);
-        int m = 0;
-        int n = s.length;
-        for (int i = 0; i < n; ++i) {
-            if (i == 0 || s[i] != s[i - 1]) {
-                s[m++] = s[i];
-            }
-        }
-        BinaryIndexedTree tree = new BinaryIndexedTree(m);
-        for (int x : nums) {
-            x = search(s, x, m);
-            int t = tree.query(x - 1) + 1;
-            tree.update(x, t);
-        }
-        return tree.query(m);
-    }
 
-    private int search(int[] nums, int x, int r) {
-        int l = 0;
-        while (l < r) {
-            int mid = (l + r) >> 1;
-            if (nums[mid] >= x) {
-                r = mid;
-            } else {
-                l = mid + 1;
-            }
-        }
-        return l + 1;
-    }
-}
-
-class BinaryIndexedTree {
-    private int n;
-    private int[] c;
-
-    public BinaryIndexedTree(int n) {
-        this.n = n;
-        c = new int[n + 1];
-    }
-
-    public void update(int x, int v) {
-        while (x <= n) {
-            c[x] = Math.max(c[x], v);
-            x += x & -x;
-        }
-    }
-
-    public int query(int x) {
-        int mx = 0;
-        while (x > 0) {
-            mx = Math.max(mx, c[x]);
-            x -= x & -x;
-        }
-        return mx;
-    }
-}
-```
 
 #### C++
 
