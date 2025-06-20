@@ -92,7 +92,7 @@ We use a 1D array of size target + 1.
 
 #### Java
 
-```java
+```一维DP
 
 
 class Solution {
@@ -120,7 +120,7 @@ class Solution {
     }
 }
 
-```java
+```二维DP
 class Solution {
     public boolean canPartition(int[] nums) {
         // int s = Arrays.stream(nums).sum();
