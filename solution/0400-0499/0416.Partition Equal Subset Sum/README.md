@@ -72,12 +72,18 @@ $$
 This is a classic 0/1 Knapsack problem. We use dynamic programming with a 1D boolean array dp where dp[i] represents whether a subset with sum i can be formed from the elements in the array.
 
 Calculate the total sum of the array.
+
 If it's odd, return false.
+
 Define the target sum as totalSum / 2.
+
 Initialize a dp array with size target + 1, where dp[0] = true because a zero sum can always be formed.
+
 For each number in the input, update the dp array from right to left (to avoid using the same number multiple times).
 Return the value of dp[target].
+
 Complexity
+
 Time complexity: O(n⋅s)
 Where ( n ) is the number of elements and ( s ) is the target sum (totalSum / 2).
 
