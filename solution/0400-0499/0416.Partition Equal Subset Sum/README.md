@@ -69,24 +69,50 @@ $$
 
 <!-- tabs:start -->
 
-#### Python3
+This is a classic 0/1 Knapsack problem. We use dynamic programming with a 1D boolean array dp where dp[i] represents whether a subset with sum i can be formed from the elements in the array.
 
-```python
-class Solution:
-    def canPartition(self, nums: List[int]) -> bool:
-        m, mod = divmod(sum(nums), 2)
-        if mod:
-            return False
-        n = len(nums)
-        f = [[False] * (m + 1) for _ in range(n + 1)]
-        f[0][0] = True
-        for i, x in enumerate(nums, 1):
-            for j in range(m + 1):
-                f[i][j] = f[i - 1][j] or (j >= x and f[i - 1][j - x])
-        return f[n][m]
-```
+Calculate the total sum of the array.
+If it's odd, return false.
+Define the target sum as totalSum / 2.
+Initialize a dp array with size target + 1, where dp[0] = true because a zero sum can always be formed.
+For each number in the input, update the dp array from right to left (to avoid using the same number multiple times).
+Return the value of dp[target].
+Complexity
+Time complexity: O(n⋅s)
+Where ( n ) is the number of elements and ( s ) is the target sum (totalSum / 2).
+
+Space complexity: O(s)
+We use a 1D array of size target + 1.
 
 #### Java
+
+```java
+
+
+class Solution {
+    /**
+    dp[i] = dp[i-nums[i]] ||
+     */
+    public boolean canPartition(int[] nums) {
+        int s = 0;
+        for (int x : nums) {
+            s += x;
+        }
+        if (s % 2 == 1) {
+            return false;
+        }
+        int n = nums.length;
+        int m = s/2;;
+        boolean[] dp = new boolean[m+1];
+        dp[0] = true;
+        for (int num : nums) {
+            for (int i = m; i >= num; i--) {
+                dp[i] = dp[i] || dp[i - num];
+            }
+        }
+        return dp[m];
+    }
+}
 
 ```java
 class Solution {
