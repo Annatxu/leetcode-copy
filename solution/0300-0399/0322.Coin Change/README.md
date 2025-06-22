@@ -96,9 +96,9 @@ $$
 
 <!-- tabs:start -->
 
-#### Java
+#### Java 1-D
 
-```java 1-D
+```java
 class Solution {
     /**
     dp[n] = min (dp[n - 1], dp[n -2], dp[n - 5]) + 1;
@@ -115,8 +115,8 @@ class Solution {
         return dp[amount] == amount + 1 ? -1 : dp[amount];
     }
 }
-
-```java 2-D
+#### Java 2-D
+```java
 class Solution {
     public int coinChange(int[] coins, int amount) {
         final int inf = 1 << 30;
