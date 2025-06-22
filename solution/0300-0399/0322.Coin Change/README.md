@@ -99,6 +99,7 @@ $$
 #### Java 1-D
 
 ```java 1-D
+
 class Solution {
     /**
     dp[n] = min (dp[n - 1], dp[n -2], dp[n - 5]) + 1;
@@ -115,7 +116,7 @@ class Solution {
         return dp[amount] == amount + 1 ? -1 : dp[amount];
     }
 }
-
+```
 
 #### JAVA 2-D
 
