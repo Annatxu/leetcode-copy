@@ -117,7 +117,7 @@ class Solution {
 }
 
 
-#### Java 2-D
+#### C++ 2-D
 
 ```java
 class Solution {
