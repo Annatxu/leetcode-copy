@@ -71,20 +71,6 @@ tags:
 
 <!-- tabs:start -->
 
-#### Python3
-
-```python
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        @cache
-        def dfs(i: int) -> int:
-            if i >= len(nums):
-                return 0
-            return max(nums[i] + dfs(i + 2), dfs(i + 1))
-
-        return dfs(0)
-```
-
 #### Java
 
 ```java
@@ -106,6 +92,48 @@ class Solution {
             f[i] = Math.max(nums[i] + dfs(i + 2), dfs(i + 1));
         }
         return f[i];
+    }
+}
+```
+
+### 方法二：动态规划
+
+我们定义 $f[i]$ 表示前 $i$ 间房屋能偷窃到的最高总金额，初始时 $f[0]=0$, $f[1]=nums[0]$。
+
+考虑 $i \gt 1$ 的情况，第 $i$ 间房屋有两个选项：
+
+-   不偷窃第 $i$ 间房屋，偷窃总金额为 $f[i-1]$；
+-   偷窃第 $i$ 间房屋，偷窃总金额为 $f[i-2]+nums[i-1]$；
+
+因此，我们可以得到状态转移方程：
+
+$$
+f[i]=
+\begin{cases}
+0, & i=0 \\
+nums[0], & i=1 \\
+\max(f[i-1],f[i-2]+nums[i-1]), & i \gt 1
+\end{cases}
+$$
+
+最终的答案即为 $f[n]$，其中 $n$ 是数组的长度。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 是数组长度。
+
+<!-- tabs:start -->
+
+#### Java
+
+```java
+class Solution {
+    public int rob(int[] nums) {
+        int n = nums.length;
+        int[] f = new int[n + 1];
+        f[1] = nums[0];
+        for (int i = 2; i <= n; ++i) {
+            f[i] = Math.max(f[i - 1], f[i - 2] + nums[i - 1]);
+        }
+        return f[n];
     }
 }
 ```
@@ -221,61 +249,6 @@ function rob(nums) {
 <!-- solution:end -->
 
 <!-- solution:start -->
-
-### 方法二：动态规划
-
-我们定义 $f[i]$ 表示前 $i$ 间房屋能偷窃到的最高总金额，初始时 $f[0]=0$, $f[1]=nums[0]$。
-
-考虑 $i \gt 1$ 的情况，第 $i$ 间房屋有两个选项：
-
--   不偷窃第 $i$ 间房屋，偷窃总金额为 $f[i-1]$；
--   偷窃第 $i$ 间房屋，偷窃总金额为 $f[i-2]+nums[i-1]$；
-
-因此，我们可以得到状态转移方程：
-
-$$
-f[i]=
-\begin{cases}
-0, & i=0 \\
-nums[0], & i=1 \\
-\max(f[i-1],f[i-2]+nums[i-1]), & i \gt 1
-\end{cases}
-$$
-
-最终的答案即为 $f[n]$，其中 $n$ 是数组的长度。
-
-时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 是数组长度。
-
-<!-- tabs:start -->
-
-#### Python3
-
-```python
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        n = len(nums)
-        f = [0] * (n + 1)
-        f[1] = nums[0]
-        for i in range(2, n + 1):
-            f[i] = max(f[i - 1], f[i - 2] + nums[i - 1])
-        return f[n]
-```
-
-#### Java
-
-```java
-class Solution {
-    public int rob(int[] nums) {
-        int n = nums.length;
-        int[] f = new int[n + 1];
-        f[1] = nums[0];
-        for (int i = 2; i <= n; ++i) {
-            f[i] = Math.max(f[i - 1], f[i - 2] + nums[i - 1]);
-        }
-        return f[n];
-    }
-}
-```
 
 #### C++
 
