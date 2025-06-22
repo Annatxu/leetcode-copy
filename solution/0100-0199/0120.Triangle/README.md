@@ -86,9 +86,9 @@ $$
 
 <!-- tabs:start -->
 
-#### Python3
+#### java-2dim
 
-```Java-2dim
+```Java
  public int minimumTotal(List<List<Integer>> triangle) {
         int n = triangle.size();
         int[][] f = new int[n][n];
@@ -108,7 +108,7 @@ $$
     }
 ```
 
-#### Java
+#### Java-1dim
 
 ```java
 class Solution {
