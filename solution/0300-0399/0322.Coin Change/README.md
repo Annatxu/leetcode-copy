@@ -98,7 +98,7 @@ $$
 
 #### Java
 
-```java
+```java 1-D
 class Solution {
     /**
     dp[n] = min (dp[n - 1], dp[n -2], dp[n - 5]) + 1;
@@ -116,7 +116,7 @@ class Solution {
     }
 }
 
-```java
+```java 2-D
 class Solution {
     public int coinChange(int[] coins, int amount) {
         final int inf = 1 << 30;
