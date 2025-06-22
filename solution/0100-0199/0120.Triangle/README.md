@@ -88,15 +88,24 @@ $$
 
 #### Python3
 
-```python
-class Solution:
-    def minimumTotal(self, triangle: List[List[int]]) -> int:
-        n = len(triangle)
-        f = [[0] * (n + 1) for _ in range(n + 1)]
-        for i in range(n - 1, -1, -1):
-            for j in range(i + 1):
-                f[i][j] = min(f[i + 1][j], f[i + 1][j + 1]) + triangle[i][j]
-        return f[0][0]
+```Java-2dim
+ public int minimumTotal(List<List<Integer>> triangle) {
+        int n = triangle.size();
+        int[][] f = new int[n][n];
+        f[0][0] = triangle.get(0).get(0);
+        for (int i = 1; i < n; ++i) {
+            f[i][0] = f[i - 1][0] + triangle.get(i).get(0);
+            for (int j = 1; j < i; ++j) {
+                f[i][j] = Math.min(f[i - 1][j - 1], f[i - 1][j]) + triangle.get(i).get(j);
+            }
+            f[i][i] = f[i - 1][i - 1] + triangle.get(i).get(i);
+        }
+        int minTotal = f[n - 1][0];
+        for (int i = 1; i < n; ++i) {
+            minTotal = Math.min(minTotal, f[n - 1][i]);
+        }
+        return minTotal;
+    }
 ```
 
 #### Java
