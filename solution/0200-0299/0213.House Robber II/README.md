@@ -65,25 +65,17 @@ tags:
 
 环状排列意味着第一个房屋和最后一个房屋中最多只能选择一个偷窃，因此可以把此环状排列房间问题约化为两个单排排列房屋子问题。
 
+考虑是否偷 nums[0]：
+
+如果偷 nums[0]，那么 nums[1] 和 nums[n−1] 不能偷，问题变成从 nums[2] 到 nums[n−2] 的非环形版本。这里官方题解计算的是 nums[0] 到 nums[n−2]，感觉绕了一个弯，不如直接求 nums[2] 到 nums[n−2]。
+如果不偷 nums[0]，那么问题变成从 nums[1] 到 nums[n−1] 的非环形版本。
+这两种方案覆盖了所有情况（毕竟 nums[0] 只有偷与不偷，没有第三种选择），所以取两种方案的最大值，即为答案。
+
+此外，官方题解还特判了 n=1 和 n=2，其实这是没有必要的，两个变量初始化成 0 就行。
+
 时间复杂度 $O(n)$，其中 $n$ 是数组长度。空间复杂度 $O(1)$。
 
 <!-- tabs:start -->
-
-#### Python3
-
-```python
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        def _rob(nums):
-            f = g = 0
-            for x in nums:
-                f, g = max(f, g), f + x
-            return max(f, g)
-
-        if len(nums) == 1:
-            return nums[0]
-        return max(_rob(nums[1:]), _rob(nums[:-1]))
-```
 
 #### Java
 
