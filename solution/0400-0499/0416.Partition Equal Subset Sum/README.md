@@ -110,10 +110,10 @@ Return the value of dp[target].
 
 Complexity
 
-Time complexity: O(n⋅s)
-Where ( n ) is the number of elements and ( s ) is the target sum (totalSum / 2).
+Time complexity: O(n⋅m)
+Where ( n ) is the number of elements and ( m ) is the target sum (totalSum / 2).
 
-Space complexity: O(s)
+Space complexity: O(m)
 We use a 1D array of size target + 1.
 
 #### Java
