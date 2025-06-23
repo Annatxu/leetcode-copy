@@ -68,8 +68,6 @@ tags:
 
 时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为数组 $prices$ 的长度。
 
-我们注意到，状态 $f[i][]$ 的转移只与 $f[i - 1][]$ 和 $f[i - 2][0]$ 有关，因此我们可以用三个变量 $f$, $f_0$, $f_1$ 代替数组 $f$，将空间复杂度优化到 $O(1)$。
-
 <!-- tabs:start -->
 
 #### Java
@@ -88,6 +86,36 @@ class Solution {
     }
 }
 ```
+
+### 空间优化
+我们注意到，状态 $f[i][]$ 的转移只与 $f[i - 1][]$ 和 $f[i - 2][0]$ 有关，因此我们可以用三个变量 $f$, $f_0$, $f_1$ 代替数组 $f$，将空间复杂度优化到 $O(1)$。
+
+```java
+class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices.length == 0) {
+            return 0;
+        }
+
+        int n = prices.length;
+        int f0 = -prices[0];
+        int f1 = 0;
+        int f2 = 0;
+        for (int i = 1; i < n; ++i) {
+            int newf0 = Math.max(f0, f2 - prices[i]);
+            int newf1 = f0 + prices[i];
+            int newf2 = Math.max(f1, f2);
+            f0 = newf0;
+            f1 = newf1;
+            f2 = newf2;
+        }
+
+        return Math.max(f1, f2);
+    }
+}
+```
+
+
 
 ### 方法一：记忆化搜索
 
