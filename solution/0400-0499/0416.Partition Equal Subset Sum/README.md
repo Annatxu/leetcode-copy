@@ -94,27 +94,27 @@ class Solution {
     }
 }
 ```
+这是一个经典的 0/1 背包问题。我们使用动态规划和一个一维布尔数组 dp，其中 dp[i] 表示是否可以从数组中的元素组成和为 i 的子集。
 
-This is a classic 0/1 Knapsack problem. We use dynamic programming with a 1D boolean array dp where dp[i] represents whether a subset with sum i can be formed from the elements in the array.
+步骤如下：
 
-Calculate the total sum of the array.
+计算数组的总和（totalSum）。
 
-If it's odd, return false.
+如果总和是奇数，返回 false（因为不能将其平均分成两个子集）。
 
-Define the target sum as totalSum / 2.
+定义目标和 target = totalSum / 2。
 
-Initialize a dp array with size target + 1, where dp[0] = true because a zero sum can always be formed.
+初始化一个大小为 target + 1 的布尔数组 dp，其中 dp[0] = true，因为和为 0 总是可以通过不选择任何元素来实现。
 
-For each number in the input, update the dp array from right to left (to avoid using the same number multiple times).
-Return the value of dp[target].
+对于输入数组中的每个数，从右向左更新 dp 数组（这样可以避免重复使用同一个数）。
 
-Complexity
+返回 dp[target] 的值，表示是否可以找到一个子集使其和为目标值。
 
-Time complexity: O(n⋅m)
-Where ( n ) is the number of elements and ( m ) is the target sum (totalSum / 2).
+复杂度分析：
 
-Space complexity: O(m)
-We use a 1D array of size target + 1.
+时间复杂度：O(n⋅m)，其中 n 是数组中的元素个数，m 是目标和（即 totalSum / 2）。
+
+空间复杂度：O(m)，我们只使用了一个大小为 target + 1 的一维数组。
 
 #### Java
 
@@ -146,6 +146,27 @@ class Solution {
     }
 }
 ```
+
+This is a classic 0/1 Knapsack problem. We use dynamic programming with a 1D boolean array dp where dp[i] represents whether a subset with sum i can be formed from the elements in the array.
+
+Calculate the total sum of the array.
+
+If it's odd, return false.
+
+Define the target sum as totalSum / 2.
+
+Initialize a dp array with size target + 1, where dp[0] = true because a zero sum can always be formed.
+
+For each number in the input, update the dp array from right to left (to avoid using the same number multiple times).
+Return the value of dp[target].
+
+Complexity
+
+Time complexity: O(n⋅m)
+Where ( n ) is the number of elements and ( m ) is the target sum (totalSum / 2).
+
+Space complexity: O(m)
+We use a 1D array of size target + 1.
 
 #### C++
 
