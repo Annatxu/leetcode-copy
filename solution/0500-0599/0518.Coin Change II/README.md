@@ -74,7 +74,54 @@ tags:
 
 <!-- solution:start -->
 
-### 方法一：动态规划(完全背包)
+### 方法一：动态规划 1-D
+
+可以通过动态规划的方法计算可能的组合数。用 dp[x] 表示金额之和等于 x 的硬币组合数，目标是求 dp[amount]。
+
+动态规划的边界是 dp[0]=1。只有当不选取任何硬币时，金额之和才为 0，因此只有 1 种硬币组合。
+
+对于面额为 coin 的硬币，当 coin≤i≤amount 时，如果存在一种硬币组合的金额之和等于 i−coin，则在该硬币组合中增加一个面额为 coin 的硬币，即可得到一种金额之和等于 i 的硬币组合。因此需要遍历 coins，对于其中的每一种面额的硬币，更新数组 dp 中的每个大于或等于该面额的元素的值。
+
+由此可以得到动态规划的做法：
+
+初始化 dp[0]=1；
+
+遍历 coins，对于其中的每个元素 coin，进行如下操作：
+
+遍历 i 从 coin 到 amount，将 dp[i−coin] 的值加到 dp[i]。
+最终得到 dp[amount] 的值即为答案。
+
+#### Java
+
+```java
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[] dp = new int[amount + 1];
+        boolean[] valid = new boolean[amount + 1];
+        dp[0] = 1;
+        valid[0] = true;
+        for (int coin : coins) {
+            for (int i = coin; i <= amount; i++) {
+                valid[i] |= valid[i - coin];
+            }
+        }
+        if(!valid[amount]) return 0;
+        for (int coin : coins) {
+            for (int i = coin; i <= amount; i++) {
+                dp[i] += dp[i - coin];
+            }
+        }
+        return dp[amount];
+    }
+}
+
+作者：力扣官方题解
+链接：https://leetcode.cn/problems/coin-change-ii/solutions/821278/ling-qian-dui-huan-ii-by-leetcode-soluti-f7uh/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+### 方法一：动态规划(完全背包) 2-D
 
 我们定义 $f[i][j]$ 表示使用前 $i$ 种硬币，凑出金额 $j$ 的硬币组合数。初始时 $f[0][0] = 1$，其余位置的值均为 $0$。
 
@@ -103,22 +150,6 @@ $$
 时间复杂度 $O(m \times n)$，空间复杂度 $O(m \times n)$。其中 $m$ 和 $n$ 分别为硬币的种类数和总金额。
 
 <!-- tabs:start -->
-
-#### Python3
-
-```python
-class Solution:
-    def change(self, amount: int, coins: List[int]) -> int:
-        m, n = len(coins), amount
-        f = [[0] * (n + 1) for _ in range(m + 1)]
-        f[0][0] = 1
-        for i, x in enumerate(coins, 1):
-            for j in range(n + 1):
-                f[i][j] = f[i - 1][j]
-                if j >= x:
-                    f[i][j] += f[i][j - x]
-        return f[m][n]
-```
 
 #### Java
 
