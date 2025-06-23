@@ -69,6 +69,32 @@ $$
 
 <!-- tabs:start -->
 
+```二维DP
+class Solution {
+    public boolean canPartition(int[] nums) {
+        // int s = Arrays.stream(nums).sum();
+        int s = 0;
+        for (int x : nums) {
+            s += x;
+        }
+        if (s % 2 == 1) {
+            return false;
+        }
+        int n = nums.length;
+        int m = s >> 1;
+        boolean[][] f = new boolean[n + 1][m + 1];
+        f[0][0] = true;
+        for (int i = 1; i <= n; ++i) {
+            int x = nums[i - 1];
+            for (int j = 0; j <= m; ++j) {
+                f[i][j] = f[i - 1][j] || (j >= x && f[i - 1][j - x]);
+            }
+        }
+        return f[n][m];
+    }
+}
+```
+
 This is a classic 0/1 Knapsack problem. We use dynamic programming with a 1D boolean array dp where dp[i] represents whether a subset with sum i can be formed from the elements in the array.
 
 Calculate the total sum of the array.
@@ -117,31 +143,6 @@ class Solution {
             }
         }
         return dp[m];
-    }
-}
-
-```二维DP
-class Solution {
-    public boolean canPartition(int[] nums) {
-        // int s = Arrays.stream(nums).sum();
-        int s = 0;
-        for (int x : nums) {
-            s += x;
-        }
-        if (s % 2 == 1) {
-            return false;
-        }
-        int n = nums.length;
-        int m = s >> 1;
-        boolean[][] f = new boolean[n + 1][m + 1];
-        f[0][0] = true;
-        for (int i = 1; i <= n; ++i) {
-            int x = nums[i - 1];
-            for (int j = 0; j <= m; ++j) {
-                f[i][j] = f[i - 1][j] || (j >= x && f[i - 1][j - x]);
-            }
-        }
-        return f[n][m];
     }
 }
 ```
