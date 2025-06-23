@@ -92,9 +92,9 @@ $$
 
 最终的答案即为 $f[m - 1][n - 1]$。
 
-时间复杂度 $O(m \times n)$，空间复杂度 $O(m \times n)$。其中 $m$ 和 $n$ 分别是网格的行数和列数。
+在右下角的数值是由上面的值还有左边的值相加得来的。the value in the bottom-right corner is calculated as val (from above) +  val(from left).
 
-我们注意到 $f[i][j]$ 仅与 $f[i - 1][j]$ 和 $f[i][j - 1]$ 有关，因此我们优化掉第一维空间，仅保留第二维空间，得到时间复杂度 $O(m \times n)$，空间复杂度 $O(n)$ 的实现。
+时间复杂度 $O(m \times n)$，空间复杂度 $O(m \times n)$。其中 $m$ 和 $n$ 分别是网格的行数和列数。
 
 <!-- tabs:start -->
 
@@ -118,8 +118,10 @@ class Solution {
         return f[m - 1][n - 1];
     }
 }
-```
- 在右下角的数值是由上面的值还有左边的值相加得来的。the value in the bottom-right corner is calculated as val (from above) +  val(from left).
+``
+ 
+我们注意到 $f[i][j]$ 仅与 $f[i - 1][j]$ 和 $f[i][j - 1]$ 有关，因此我们优化掉第一维空间，仅保留第二维空间，得到时间复杂度 $O(m \times n)$，空间复杂度 $O(n)$ 的实现。
+
 ```方法三
 class Solution {
     public int uniquePaths(int m, int n) {
