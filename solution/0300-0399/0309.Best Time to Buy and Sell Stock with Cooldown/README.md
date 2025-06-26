@@ -87,6 +87,44 @@ class Solution {
 }
 ```
 
+#### Java
+
+```java
+class Solution {
+    /**
+    dp[i]: represent the max profit of the i day.
+    dp[i][0]: still have a stock;
+    dp[i][1]: in cooldown time;
+    dp[i][2]: didnot have stock also not in cooldown;
+
+dp[i][0] = Math.max(dp[i-1][2] - price[i], dp[i-1][0]);
+dp[i][1] = (dp[i-1][0] + price[i])
+dp[i][2] = Math.max(dp[i-1][1], dp[i-1][2])
+
+注意到第 0 天实际上是不存在处于冷冻期的情况的，但我们仍然可以将对应的状态 f[0][1] 置为零， Why????
+dp[n-1][1], dp[n-1][2];
+
+     */
+    public int maxProfit(int[] prices) {
+        if (prices.length == 0) {
+            return 0;
+        }
+        int n = prices.length;
+        int[][] dp = new int[n][3];
+        dp[0][0] = -prices[0];
+        for (int i = 1; i < n; ++i) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
+            dp[i][1] = dp[i - 1][0] + prices[i];
+            dp[i][2] = Math.max(dp[i - 1][1], dp[i - 1][2]);
+        }
+        return Math.max(dp[n - 1][1], dp[n - 1][2]);
+
+
+
+    }
+}
+```
+
 ### 空间优化
 我们注意到，状态 $f[i][]$ 的转移只与 $f[i - 1][]$ 和 $f[i - 2][0]$ 有关，因此我们可以用三个变量 $f$, $f_0$, $f_1$ 代替数组 $f$，将空间复杂度优化到 $O(1)$。
 
