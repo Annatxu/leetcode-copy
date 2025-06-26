@@ -91,7 +91,7 @@ class Solution {
 
     private int rob(int[] nums, int start, int end) {
         int first = 0, second = 0;
-        for (int i = start; i <= r; i++) {
+        for (int i = start; i <= end; i++) {
             int temp = Math.max(first, second);
             second = first + nums[i];
             first = temp;
