@@ -94,25 +94,6 @@ $$
 
 <!-- tabs:start -->
 
-#### Python3
-
-```python
-class Solution:
-    def minDistance(self, word1: str, word2: str) -> int:
-        m, n = len(word1), len(word2)
-        f = [[0] * (n + 1) for _ in range(m + 1)]
-        for j in range(1, n + 1):
-            f[0][j] = j
-        for i, a in enumerate(word1, 1):
-            f[i][0] = i
-            for j, b in enumerate(word2, 1):
-                if a == b:
-                    f[i][j] = f[i - 1][j - 1]
-                else:
-                    f[i][j] = min(f[i - 1][j], f[i][j - 1], f[i - 1][j - 1]) + 1
-        return f[m][n]
-```
-
 #### Java
 
 ```java
@@ -137,7 +118,24 @@ class Solution {
     }
 }
 ```
+follow-up: 你可能还会问，这里只求出了最小的编辑距离，那具体的操作是什么？你之前举的修改公众号文章的例子，只有一个最小编辑距离肯定不够，还得知道具体怎么修改才行。
 
+这个其实很简单，代码稍加修改，给 dp 数组增加额外的信息即可：
+
+```
+// int[][] dp;
+Node[][] dp;
+
+class Node {
+    int val;
+    int choice;
+    // 0 代表啥都不做
+    // 1 代表插入
+    // 2 代表删除
+    // 3 代表替换
+}
+
+```
 #### C++
 
 ```cpp
